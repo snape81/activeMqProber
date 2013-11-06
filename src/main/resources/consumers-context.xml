@@ -6,9 +6,8 @@
        http://www.springframework.org/schema/beans/spring-beans.xsd
        http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <context:component-scan base-package="it.claudiostarnoni.util.activeMqProber.bean.*"/>
+    <import resource="classpath:common-context.xml"/>
 
-    <context:property-placeholder location="classpath:application.properties" ignore-unresolvable="true" order="1"/>
     <context:property-placeholder location="classpath:consumer.properties" ignore-unresolvable="true" order="2"/>
 
 
@@ -24,22 +23,12 @@
     <bean id="receiverBean"
           class="it.claudiostarnoni.util.activeMqProber.bean.FileWriter"/>
 
-    <bean id="jmsConnectionFactory"
-          class="org.apache.activemq.ActiveMQConnectionFactory"
-          p:brokerURL="tcp://${activeMqBroker.host}:61616"/>
-
-    <bean id="consumerPooledConnectionFactory"
-          class="org.apache.activemq.pool.PooledConnectionFactory"
-          init-method="start"
-          destroy-method="stop"
-          p:maxConnections="${max.jms.conn}"
-          p:connectionFactory-ref="jmsConnectionFactory"/>
-
-
     <bean id="jmsConfigConsumer"
           class="org.apache.camel.component.jms.JmsConfiguration"
-          p:connectionFactory-ref="consumerPooledConnectionFactory"
-          p:concurrentConsumers="${max.jms.concurrent.client}"/>
+          p:connectionFactory-ref="pooledConnectionFactory"
+          p:maxConcurrentConsumers="${max.jms.concurrent.consumer}"
+          p:concurrentConsumers="${jms.concurrent.consumer}"
+          p:maxMessagesPerTask="${jms.maxMessagesPerTask}"  />
 
     <bean id="activemqConsumer"
           class="org.apache.activemq.camel.component.ActiveMQComponent"

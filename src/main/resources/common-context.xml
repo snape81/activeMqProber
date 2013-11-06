@@ -14,7 +14,10 @@
 
     <bean id="jmsConnectionFactory"
           class="org.apache.activemq.ActiveMQConnectionFactory"
-          p:brokerURL="tcp://${activeMqBroker.host}:61616"/>
+          p:brokerURL="tcp://${activeMqBroker.host}:61616" p:prefetchPolicy-ref="prefetchPolicy"/>
+
+    <bean id="prefetchPolicy" class="org.apache.activemq.ActiveMQPrefetchPolicy"
+          p:queuePrefetch="${queue.prefetch.policy}"/>
 
     <bean id="pooledConnectionFactory"
           class="org.apache.activemq.pool.PooledConnectionFactory"

@@ -30,7 +30,7 @@
           p:concurrentConsumers="${jms.concurrent.consumer}"
           p:maxMessagesPerTask="${jms.maxMessagesPerTask}"  />
 
-    <bean id="activemqConsumer"
+    <bean id="activemq"
           class="org.apache.activemq.camel.component.ActiveMQComponent"
           p:configuration-ref="jmsConfigConsumer"/>
 

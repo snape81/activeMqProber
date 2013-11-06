@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="30 seconds">
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%date{ISO8601} %-5level [%thread] %X{sourceThread} %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    <root level="DEBUG">
+        <appender-ref ref="STDOUT"/>
+    </root>
+    <logger name="org.springframework">
+        <level value="INFO"/>
+    </logger>
+    <logger name="it.claudiostarnoni">
+        <level value="DEBUG"/>
+    </logger>
+    <logger name="org.apache">
+        <level value="INFO"/>
+    </logger>
+
+</configuration>

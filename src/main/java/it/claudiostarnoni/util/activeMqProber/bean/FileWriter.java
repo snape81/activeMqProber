@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Value;
 import java.io.File;
 import java.io.IOException;
 
+import static it.claudiostarnoni.util.activeMqProber.util.Constants.*;
+
 public class FileWriter {
     private static final Logger LOG = LoggerFactory.getLogger(FileWriter.class);
 
@@ -20,14 +22,23 @@ public class FileWriter {
 
     public void getEnrichAndWriteMessage(@Body String body) {
         try {
-            LOG.debug("Received Body {}",body);
+            LOG.debug("Received Body .. im gonna sleep");
             Thread.sleep(waitMillis);
         } catch (InterruptedException ignored) {
         }
         try {
-            FileUtils.writeStringToFile(new File(reportFilePath), body + "," + System.currentTimeMillis()+"\n", true);
+            final int noStoreTokenIndex = body.indexOf(NO_STORE_TOKEN);
+            StringBuilder sb = new StringBuilder();
+            if (noStoreTokenIndex > 0) {
+                sb.append(body.substring(0, noStoreTokenIndex));
+            } else {
+                sb.append(body);
+            }
+            sb.append(COMMA_SEPARATOR).append(System.currentTimeMillis()).append(NEW_LINE_ESCAPE_STRING);
+            LOG.debug("About to writing on file {}",sb);
+            FileUtils.writeStringToFile(new File(reportFilePath), sb.toString(), true);
         } catch (IOException e) {
-            LOG.error("Error in writing report ",e);
+            LOG.error("Error in writing report ", e);
         }
     }
 

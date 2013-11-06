@@ -52,13 +52,4 @@
 
         <bean id="producerBean" class="it.claudiostarnoni.util.activeMqProber.bean.ProducerBean"/>
 
-        <bean id="jmsConfigConsumer"
-              class="org.apache.camel.component.jms.JmsConfiguration"
-              p:connectionFactory-ref="pooledConnectionFactory"
-              p:concurrentConsumers="${max.jms.concurrent.client}"/>
-
-        <bean id="activemqComponent"
-              class="org.apache.activemq.camel.component.ActiveMQComponent"
-              p:configuration-ref="jmsConfigConsumer"/>
-
 </beans>

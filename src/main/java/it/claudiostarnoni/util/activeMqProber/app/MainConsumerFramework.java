@@ -8,6 +8,7 @@ public class MainConsumerFramework {
     public static void main(String[] args) throws Exception {
 
         ApplicationContext context = new ClassPathXmlApplicationContext("consumers-seda-context.xml");
+        Thread.sleep(24*60*60*1000);
 
     }
 }

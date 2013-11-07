@@ -8,7 +8,7 @@ public class MainConsumerFramework {
 
     public static void main(String[] args) throws Exception {
 
-        ApplicationContext context = new ClassPathXmlApplicationContext("consumers-remote-context.xml");
+        ApplicationContext context = new ClassPathXmlApplicationContext("consumers-seda-context.xml");
         CamelContext camelContext = context.getBean("consumerContext", CamelContext.class);
 
     }

@@ -1,0 +1,1 @@
+{"classId":"QueueAction","data":"{\"content\":\"@#QAPLACEH#@\"}","sourceUri":"route://testServices/127.0.0.1","destinationUri":"route://testServices/amq-test-consumer-01.iefcloud.com","token":"88af39cb3453ac53776597fe59423e88"}

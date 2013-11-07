@@ -11,13 +11,39 @@
         <java.version>1.6</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring-version>3.1.1.RELEASE</spring-version>
+        <jackson-version>1.9.4</jackson-version>
         <activemq.version>5.5.1-fuse-01-13</activemq.version>
     </properties>
     <dependencies>
         <dependency>
+            <groupId>intentfactory-framework</groupId>
+            <artifactId>intentfactory-framework-core</artifactId>
+            <version>0.6-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>intentfactory-framework</groupId>
+            <artifactId>intentfactory-framework-core-seda</artifactId>
+            <version>0.6-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>intentfactory-framework</groupId>
+            <artifactId>intentfactory-framework-utils</artifactId>
+            <version>0.6-SNAPSHOT</version>
+        </dependency>
+        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>1.7.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-core-asl</artifactId>
+            <version>${jackson-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-mapper-asl</artifactId>
+            <version>${jackson-version}</version>
         </dependency>
         <dependency>
             <groupId>log4j</groupId>

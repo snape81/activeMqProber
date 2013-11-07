@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+          http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+
+    <context:property-placeholder location="classpath:consumer-seda.properties"/>
+
+    <bean id="actionFactory" class="intentfactory.core.domain.actions.DefaultActionFactory">
+         <constructor-arg>
+             <list value-type="java.lang.Class">
+                 <value>it.claudiostarnoni.util.activeMqProber.frameworkmock.QueueAction</value>
+             </list>
+         </constructor-arg>
+     </bean>
+
+    <bean id="brokerDispatchingConsumer" class="intentfactory.core.seda.support.camel.BrokerConsumer"
+          init-method="start">
+        <constructor-arg>
+            <bean class="intentfactory.core.seda.support.handlers.DispatcherHandler">
+                <constructor-arg index="0" ref="messageDispatcher"/>
+                <constructor-arg index="1" ref="actionFactory"/>
+                <constructor-arg index="2" ref="messageMapper"/>
+            </bean>
+        </constructor-arg>
+        <constructor-arg ref="sedaConfig"/>
+        <constructor-arg ref="componentFactory"/>
+    </bean>
+
+    <bean id="componentFactory" class="intentfactory.core.seda.support.ComponentFactory" init-method="start"
+          destroy-method="stop">
+        <constructor-arg ref="brokerProducerFactory"/>
+    </bean>
+
+    <bean id="brokerProducerFactory" class="intentfactory.core.seda.support.camel.BrokerProducerFactory">
+        <constructor-arg index="0" ref="testServiceURI"/>
+        <constructor-arg index="1" ref="messageMapper"/>
+    </bean>
+
+
+    <bean id="testServiceURI" class="intentfactory.core.topology.TopologyURI">
+        <constructor-arg index="0" ref="testType"/>
+        <constructor-arg index="1" value="${topology.service.id}"/>
+    </bean>
+
+    <bean id="messageMapper" class="intentfactory.utils.rest.util.JacksonFactory"
+          factory-method="defaultMapper">
+        <constructor-arg>
+            <util:map>
+                <entry key="intentfactory.core.domain.actions.ActionFactory"
+                       value="intentfactory.core.domain.actions.DefaultActionFactory"/>
+            </util:map>
+        </constructor-arg>
+    </bean>
+
+    <bean id="messageDispatcher" class="intentfactory.core.communication.dispatchers.DefaultMessageDispatcher">
+        <constructor-arg ref="actionFactory"/>
+        <property name="processors">
+            <list>
+                <ref bean="testProcessor"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="testProcessor" class="it.claudiostarnoni.util.activeMqProber.frameworkmock.TestProcessor"/>
+
+    <bean id="testType" class="it.claudiostarnoni.util.activeMqProber.frameworkmock.TestServiceType"/>
+
+    <util:map id="sedaConfig" key-type="intentfactory.core.seda.support.SedaConfiguration">
+        <entry key="BROKER_URL" value="${dispatching.consumer.broker.url}"/>
+        <entry key="QUEUE_NAME" value="${dispatching.consumer.queue.name}"/>
+        <entry key="MAX_CONNECTION" value="${dispatching.consumer.max.connection}"/>
+    </util:map>
+</beans>

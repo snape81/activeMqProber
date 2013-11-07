@@ -52,4 +52,5 @@
 
         <bean id="producerBean" class="it.claudiostarnoni.util.activeMqProber.bean.ProducerBean"/>
 
+
 </beans>
